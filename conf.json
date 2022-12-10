@@ -1,0 +1,6 @@
+{"region_code_table": "D:\\ma_data\\AMap_adcode_citycode_Qra6zq04163403.xlsx",
+  "OD_data_directory": "D:\\ma_data\\splited",
+  "core_shp_directory": "D:\\ma_data\\数据处理\\core",
+  "around_shp_directory": "D:\\ma_data\\数据处理\\region",
+  "commute_rate_save_path": "D:\\ma_data\\通勤率"
+}
