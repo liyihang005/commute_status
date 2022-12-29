@@ -45,6 +45,7 @@ class LoopState():
 
     def LoopRigionOverlap(self, rigion_shp):
         self.around_poly = gpd.read_file(rigion_shp)
+        self.around_poly = self.around_poly[self.around_poly['面积'] > 0]
         from main import FromNameToCoreAroundShp
         self.around_poly = \
             transform(self.project, FromNameToCoreAroundShp.union_around_shp(self.around_poly)).convex_hull
@@ -130,30 +131,24 @@ def multi_main(text_regions):
         # com.append(sum(v)/ls.loop_area[k])
     # pd.DataFrame({'dis': dis, 'pop2core/area': com}).to_csv(os.path.join(r"D:\ma_data\通勤率\中心到四周通勤密度", text_regions + '.csv'),
     #                                                       index=None)
-    pd.DataFrame({'dis': dis, 'sum(pop2core)/sum(pop)': com}).to_csv(
+    pd.DataFrame({'dis': dis, 'sum(pop2core)/sum(pop)': com}).sort_values(by='dis').to_csv(
         os.path.join(r"D:\ma_data\通勤率\中心到四周通勤密度", text_regions + '.csv'),
         index=None)
 
 
 if __name__ == '__main__':
-    # ext = [(0, 0), (0, 2), (2, 2), (2, 0), (0, 0)]  # 外部顶点
-    # int = [(1, 0), (0.5, 0.5), (1, 1), (1.5, 0.5), (1, 0)][::-1]  # 内部顶点
-    # polygon = Polygon(shell=ext, holes=[int])
-    # p = gpd.GeoSeries(polygon)
-    # p.plot()
-    # plt.show()
 
     # ls = LoopState(center=[116.398466, 39.919163])
     # ls.PointInLoop(point=[117.251581, 39.128223], pop2core=1000)
     # ls.LoopRigionOverlap(rigion_shp='./***.shp')
     # print(ls.stat_res)
 
-    # pool = multiprocessing.Pool()
-
+    pool = multiprocessing.Pool()
     from main import GetRegions
     g_r = GetRegions(r'D:\ma_data\数据处理\core')
-    # text_regions = [[tmp] for tmp in g_r.regions]
-    # pool.map(multi_main, text_regions)
-
     text_regions = [tmp for tmp in g_r.regions]
-    multi_main(text_regions[0])
+    pool.map(multi_main, text_regions)
+
+    #  这两个城市的数据存在空的子块
+    # multi_main("成都市")
+    # multi_main("贵阳市")
