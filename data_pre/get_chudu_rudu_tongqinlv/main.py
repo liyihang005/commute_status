@@ -9,7 +9,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import multiprocessing
 
-with open('../../conf.json', 'r', encoding='utf-8') as f:
+with open(r'D:\git\commute_statis\conf.json', 'r', encoding='utf-8') as f:
     conf = json.load(f)
 geocode_file = conf["region_code_table"]
 od_data = conf["OD_data_directory"]
